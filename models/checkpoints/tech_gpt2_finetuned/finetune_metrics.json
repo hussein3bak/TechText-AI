@@ -1,0 +1,11 @@
+{
+  "base_model": "distilgpt2",
+  "parameters": 81912576,
+  "dataset": "data\\processed\\tech_cleaned.txt",
+  "total_tokens": 8655,
+  "initial_loss": 4.2808,
+  "final_loss": 3.1138,
+  "epochs": 3,
+  "training_time_seconds": 98.29,
+  "device": "cpu"
+}

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechText AI - AI-Powered Text Generation Portal</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Navigation Header -->
+    <header class="navbar">
+      <div class="brand">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>TechText <span>AI</span></h1>
+          <span class="badge">PyTorch Transformer</span>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <div class="status-indicator online" id="statusPill">
+          <span class="dot"></span>
+          <span class="status-text" id="statusText">Model Ready</span>
+        </div>
+        <button class="btn btn-secondary btn-sm" id="btnInspectModel">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          Architecture
+        </button>
+      </div>
+    </header>
+
+    <!-- Hero / Headline -->
+    <section class="hero-section">
+      <h2>Generate Text with a Custom-Trained Language Model</h2>
+      <p>An end-to-end GPT transformer built with PyTorch, trained on web-scraped technology articles and NLP processed corpora.</p>
+    </section>
+
+    <!-- Main Generation Grid -->
+    <main class="main-grid">
+      <!-- Left Column: Input and Hyperparameters -->
+      <section class="card input-card">
+        <div class="card-header">
+          <h3>Prompt Input</h3>
+          <div class="model-select-wrapper">
+            <label for="modelSelect">Model:</label>
+            <select id="modelSelect" class="form-select">
+              <option value="tech_nanogpt" selected>NanoGPT</option>
+              <option value="tech">TechText GPT</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Prompt Suggestions -->
+        <div class="prompt-chips-container">
+          <span class="chips-label">Quick Ideas:</span>
+          <div class="chips-list">
+            <button class="chip" data-prompt="Artificial intelligence is">AI is...</button>
+            <button class="chip" data-prompt="Deep learning models are capable of">Deep learning...</button>
+            <button class="chip" data-prompt="Transformers in natural language processing">Transformers NLP...</button>
+            <button class="chip" data-prompt="Computer vision systems">Computer vision...</button>
+          </div>
+        </div>
+
+        <!-- Textarea -->
+        <div class="prompt-input-group">
+          <textarea id="promptInput" rows="5" placeholder="Type a seed prompt here, e.g., 'Artificial intelligence is changing the way we'"></textarea>
+          <div class="input-footer">
+            <span class="char-count" id="charCount">0 characters</span>
+            <button class="btn-text" id="btnClearPrompt">Clear</button>
+          </div>
+        </div>
+
+        <!-- Hyperparameters Accordion / Section -->
+        <div class="settings-panel">
+          <div class="settings-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <span>Sampling Parameters</span>
+          </div>
+
+          <div class="control-row">
+            <div class="control-label">
+              <span>Temperature</span>
+              <span class="value-display" id="valTemperature">0.80</span>
+            </div>
+            <input type="range" id="sliderTemperature" min="0.1" max="1.5" step="0.05" value="0.8">
+            <div class="control-hint">Lower = deterministic, higher = creative & diverse</div>
+          </div>
+
+          <div class="control-row">
+            <div class="control-label">
+              <span>Top-K Cutoff</span>
+              <span class="value-display" id="valTopK">40</span>
+            </div>
+            <input type="range" id="sliderTopK" min="1" max="100" step="1" value="40">
+            <div class="control-hint">Limits choices to the K most likely tokens</div>
+          </div>
+
+          <div class="control-row">
+            <div class="control-label">
+              <span>Tokens to Generate</span>
+              <span class="value-display" id="valMaxTokens">120</span>
+            </div>
+            <input type="range" id="sliderMaxTokens" min="30" max="300" step="10" value="120">
+            <div class="control-hint">Target length of text generated</div>
+          </div>
+        </div>
+
+        <!-- Action Button -->
+        <button class="btn btn-primary btn-block" id="btnGenerate">
+          <span class="btn-text">Generate AI Text</span>
+          <div class="spinner" id="genSpinner" style="display: none;"></div>
+        </button>
+      </section>
+
+      <!-- Right Column: Output & Generation Preview -->
+      <section class="card output-card">
+        <div class="card-header">
+          <h3>Generated Output</h3>
+          <div class="output-actions">
+            <button class="btn btn-secondary btn-sm" id="btnCopy" title="Copy to clipboard">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span id="copyText">Copy</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Output Box -->
+        <div class="output-container" id="outputContainer">
+          <div class="empty-state" id="emptyState">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            <p>Your AI-generated text will appear here.</p>
+            <span>Type a prompt on the left and click "Generate AI Text".</span>
+          </div>
+
+          <div class="generated-content" id="generatedContent" style="display: none;">
+            <p class="seed-text" id="displayPrompt"></p>
+            <p class="generated-text" id="displayContinuation"></p>
+          </div>
+        </div>
+
+        <!-- Inference Metrics Stats Bar -->
+        <div class="metrics-bar" id="metricsBar" style="display: none;">
+          <div class="metric-item">
+            <span class="metric-title">Tokens</span>
+            <span class="metric-value" id="metricTokens">-</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-title">Latency</span>
+            <span class="metric-value" id="metricLatency">-</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-title">Model</span>
+            <span class="metric-value" id="metricModel">-</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-title">Temp / Top-K</span>
+            <span class="metric-value" id="metricSampling">-</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Generation History Section -->
+    <section class="history-section card">
+      <div class="card-header">
+        <div class="history-header-left">
+          <h3>Generation History</h3>
+          <span class="history-count" id="historyCount">0 entries</span>
+        </div>
+        <button class="btn btn-danger-outline btn-sm" id="btnClearHistory">
+          Clear History
+        </button>
+      </div>
+
+      <div class="history-list" id="historyList">
+        <div class="history-empty">No generation history yet. Try generating your first text above!</div>
+      </div>
+    </section>
+
+    <!-- Model Architecture Modal -->
+    <div class="modal-backdrop" id="archModal" style="display: none;">
+      <div class="modal-dialog">
+        <div class="modal-header">
+          <h3>TechText AI — Model Architecture</h3>
+          <button class="modal-close" id="btnCloseModal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="spec-grid">
+            <div class="spec-box">
+              <span class="spec-num">810K</span>
+              <span class="spec-label">Parameters</span>
+            </div>
+            <div class="spec-box">
+              <span class="spec-num">4</span>
+              <span class="spec-label">Transformer Layers</span>
+            </div>
+            <div class="spec-box">
+              <span class="spec-num">4</span>
+              <span class="spec-label">Attention Heads</span>
+            </div>
+            <div class="spec-box">
+              <span class="spec-num">128</span>
+              <span class="spec-label">Embedding Dim</span>
+            </div>
+          </div>
+
+          <h4 class="mt-4">Pipeline Pipeline Stages</h4>
+          <ol class="pipeline-list">
+            <li><strong>Data Collection:</strong> Automated Wikipedia Tech & AI articles scraping using polite rate limiting.</li>
+            <li><strong>NLP Cleaning:</strong> HTML stripping, emoji removal, noise symbol cleanup, Unicode normalization, whitespace standardization.</li>
+            <li><strong>Tokenization:</strong> Character-level and BPE vocabulary tokenizers with fast serialization to binary arrays.</li>
+            <li><strong>PyTorch GPT:</strong> Causal Multi-Head Self-Attention, Positional Embeddings, GELU MLP blocks, Pre-LayerNorm.</li>
+            <li><strong>Inference API:</strong> FastAPI REST endpoints with temperature and top-k nucleus sampling.</li>
+            <li><strong>Persistence:</strong> SQLite database tracking prompt history and execution settings.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>TechText AI &bull; AI-Powered Text Generation Portal &bull; Build Fellowship Project</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

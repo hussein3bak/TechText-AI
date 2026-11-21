@@ -1,0 +1,72 @@
+# ==============================================================================
+# TechText AI - Git Ignore Configuration
+# Prevents temporary files, virtual environments, secrets, large model checkpoints,
+# and runtime database logs from being uploaded to GitHub.
+# ==============================================================================
+
+# Python Bytecode & Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.pytest_cache/
+
+# Virtual Environments
+.venv/
+env/
+venv/
+ENV/
+build/
+dist/
+*.egg-info/
+
+# PyTorch Model Checkpoints & Large Weights (>100MB exceeds GitHub limits)
+*.pt
+*.pth
+*.bin
+*.safetensors
+models/checkpoints/*.pt
+models/checkpoints/*.bin
+models/checkpoints/**/*.safetensors
+**/models/checkpoints/**/*.safetensors
+**/model.safetensors
+**/tokenizer.json
+
+# Datasets & Processed Binary Artifacts
+data/raw/*.jsonl
+data/raw/*.txt
+!data/raw/sample_*.jsonl
+data/processed/*.bin
+data/processed/*.pt
+data/processed/*.pkl
+data/processed/*.txt
+data/processed/**/*.bin
+data/processed/**/*.pkl
+
+# Database & Runtime State
+*.db
+*.sqlite3
+data/history.db
+**/data/history.db
+
+# Secrets & Environment Variables (NEVER commit credentials)
+.env
+.env.local
+*.env
+!.env.example
+
+# IDEs & OS Files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs & Temporary Files
+logs/
+*.log
+scratch/
+out/
