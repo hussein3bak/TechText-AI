@@ -210,11 +210,17 @@ class GPT(nn.Module):
             # Focus only on the last time step
             logits = logits[:, -1, :]  # (B, vocab_size)
 
-            # Apply repetition penalty if specified
+            # Apply repetition penalty if specified (penalize immediate repetitive loops)
             if repetition_penalty > 1.0:
                 for b_idx in range(idx.shape[0]):
-                    unique_tokens = torch.unique(idx[b_idx])
-                    logits[b_idx, unique_tokens] /= repetition_penalty
+                    # Look at recent window (last 20 tokens) to avoid penalizing common vowels globally
+                    recent_tokens = idx[b_idx, -min(20, idx.shape[1]):]
+                    unique_tokens = torch.unique(recent_tokens)
+                    # Only penalize tokens that appeared multiple times recently
+                    for ut in unique_tokens:
+                        count = (recent_tokens == ut).sum()
+                        if count > 2:
+                            logits[b_idx, ut] /= (repetition_penalty ** (count.item() - 1))
 
             # Scale by temperature
             if temperature == 0.0:

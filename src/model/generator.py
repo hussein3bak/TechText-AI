@@ -160,12 +160,24 @@ class TextGenerator:
 
         x = torch.tensor(token_ids, dtype=torch.long, device=self.device).unsqueeze(0)
 
+        # Scale top_k appropriately for character-level vocabulary
+        # A character vocabulary has ~70-90 tokens. Top-k of 40 permits ~50% of the entire alphabet
+        # at every step, which injects random noise symbols into words.
+        # For character models, effective top_k is scaled to 3-10 tokens.
+        if self.vocab_size < 150:
+            eff_top_k = max(2, min(int(top_k * 0.15) if top_k > 10 else top_k, 10))
+        else:
+            eff_top_k = max(int(top_k), 1)
+
+        # Calibrate temperature for character level to prevent non-word character jitter
+        eff_temp = max(float(temperature), 0.05)
+
         with torch.no_grad():
             output_tokens = self.model.generate(
                 x,
                 max_new_tokens=max_new_tokens,
-                temperature=temperature,
-                top_k=top_k,
+                temperature=eff_temp,
+                top_k=eff_top_k,
                 repetition_penalty=repetition_penalty,
             )
 

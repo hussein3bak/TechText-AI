@@ -127,24 +127,13 @@ class TechScraper:
 
         # Remove unwanted elements
         for unwanted in soup(
-            ["script", "style", "nav", "footer", "header", "aside", "noscript", "table", "sup", "link", "meta"]
+            ["script", "style", "nav", "footer", "header", "aside", "noscript", "table", "sup", "link", "meta", "figure"]
         ):
             unwanted.decompose()
 
-        # Target content container
-        content_container = (
-            soup.find("section")
-            or soup.find("div", {"id": "bodyContent"})
-            or soup.find("article")
-            or soup.find("main")
-            or soup.find("body")
-        )
-
-        if not content_container:
-            content_container = soup
-
+        # Extract all paragraphs across all sections
         paragraphs = []
-        for p in content_container.find_all("p"):
+        for p in soup.find_all("p"):
             text = p.get_text().strip()
             # Filter out tiny boilerplate / empty lines
             if len(text) > 40:

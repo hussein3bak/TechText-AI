@@ -170,3 +170,41 @@ def test_frontend_files_exist():
     assert Path(res.path).exists()
     assert Path("frontend/style.css").exists()
     assert Path("frontend/app.js").exists()
+
+
+def test_model_names_order_and_naming():
+    """Verifies that NanoGPT is primary (first) and model names match requirements."""
+    models = list_models()
+    assert len(models) >= 2
+    # NanoGPT must be the first model in the list
+    assert models[0].id == "tech_nanogpt"
+    assert models[0].name == "NanoGPT"
+    assert models[1].id == "tech"
+    assert models[1].name == "TechText GPT"
+
+
+def test_sampling_parameters_ranges():
+    """Verifies that Creativity Level (temp), Word Choice Range (top_k), and Max Tokens operate properly."""
+    # Test low temperature (deterministic)
+    req_det = GenerateRequest(
+        prompt="Computers are",
+        model_name="tech_nanogpt",
+        max_tokens=20,
+        temperature=0.2,
+        top_k=5,
+    )
+    res_det = generate_text(req_det)
+    assert res_det.tokens_generated == 20
+    assert len(res_det.continuation) > 0
+
+    # Test high temperature (creative)
+    req_creat = GenerateRequest(
+        prompt="Computers are",
+        model_name="tech",
+        max_tokens=25,
+        temperature=1.2,
+        top_k=80,
+    )
+    res_creat = generate_text(req_creat)
+    assert res_creat.tokens_generated > 0
+    assert len(res_creat.continuation) > 0

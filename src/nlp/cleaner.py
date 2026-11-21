@@ -74,16 +74,27 @@ class TextCleaner:
             # Next remove noise tokens flanked by whitespace
             text = self._noise_token_pattern.sub("", text)
 
-        # 6. Remove Emojis if configured
+        # 6. Remove Emojis and obscure non-ASCII symbols if configured
         if self.remove_emojis:
-            # Strip characters outside basic multilingual and extended punctuation
-            # Keep standard ASCII + latin-1 punctuation
+            # Strip emojis and pictographs
             text = re.sub(
                 r"[\U00010000-\U0010ffff]|[\u2600-\u27bf]|[\u2300-\u23ff]",
                 "",
                 text,
                 flags=re.UNICODE,
             )
+            # Standardize math and special punctuation to clean ASCII equivalents
+            char_map = {
+                "−": "-", "‐": "-", "—": " - ", "–": " - ",
+                "×": "x", "∗": "*", "⁄": "/", "‖": " ",
+                "≤": "<=", "≥": ">=", "≠": "!=", "±": "+/-",
+                "\u2060": "", "\u2061": "", "′": "'", "″": '"',
+                "“": '"', "”": '"', "‘": "'", "’": "'",
+            }
+            for orig, repl in char_map.items():
+                text = text.replace(orig, repl)
+            # Remove obscure math operators and unprintable control characters
+            text = re.sub(r"[^\x00-\x7F]+", " ", text)
 
         # 7. Normalize whitespace
         text = self._extra_spaces_pattern.sub(" ", text)

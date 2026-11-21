@@ -17,11 +17,23 @@ TechText AI is a full-stack AI application built from scratch. It covers the com
 
 ---
 
+## Interactive Sampling Controls
+
+The portal provides an intuitive, user-friendly controls panel for tuning generation behavior:
+
+| UI Control | Technical Parameter | Description |
+|------------|---------------------|-------------|
+| **Creativity Level** | `Temperature` (0.10 – 1.50) | Controls how predictable or creative the generated text is. Lower values produce deterministic output; higher values increase diversity. |
+| **Word Choice Range** | `Top-K` (1 – 100) | Controls how many of the most likely next-token choices the AI considers at each step, cutting off low-probability candidates. |
+| **Maximum Output Length** | `Tokens to Generate` (30 – 300) | Controls the target maximum length of text the AI generates. |
+
+---
+
 ## Models
 
 | Model | Description |
 |-------|-------------|
-| **NanoGPT** *(Primary)* | A character-level transformer built entirely from scratch with PyTorch (~810K parameters). Demonstrates the fundamental mechanics of GPT — tokenisation, self-attention, and the training loop. |
+| **NanoGPT** *(Primary)* | A character-level transformer built entirely from scratch with PyTorch (~821K parameters, 4 layers, 4 attention heads, 128 embedding dimensions). Trained on a curated ~855K-character corpus of technology and AI literature. Demonstrates pure self-attention and transformer mechanics. |
 | **TechText GPT** | GPT-2 fine-tuned on scraped technology and AI articles (~81.9M parameters). Produces fluent, coherent technical prose. |
 
 ---
@@ -55,7 +67,7 @@ TechText-AI/
 │   └── scraper/                         ← Web scraper and robots.txt checker
 │
 ├── models/checkpoints/                  ← Model config files (weights excluded from git)
-├── tests/                               ← Automated test suite (10 tests)
+├── tests/                               ← Automated test suite (12 tests)
 ├── check_setup.py                       ← Environment verification script
 ├── requirements.txt                     ← Python dependencies
 ├── Dockerfile                           ← Container build file

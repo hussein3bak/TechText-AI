@@ -87,29 +87,38 @@
 
           <div class="control-row">
             <div class="control-label">
-              <span>Temperature</span>
+              <div class="param-title-wrapper">
+                <span class="param-main-label">Creativity Level</span>
+                <span class="param-tech-pill">Temperature</span>
+              </div>
               <span class="value-display" id="valTemperature">0.80</span>
             </div>
-            <input type="range" id="sliderTemperature" min="0.1" max="1.5" step="0.05" value="0.8">
-            <div class="control-hint">Lower = deterministic, higher = creative & diverse</div>
+            <input type="range" id="sliderTemperature" min="0.1" max="1.5" step="0.05" value="0.8" aria-label="Creativity Level (Temperature)">
+            <div class="control-hint">Controls how predictable or creative the generated text is.</div>
           </div>
 
           <div class="control-row">
             <div class="control-label">
-              <span>Top-K Cutoff</span>
+              <div class="param-title-wrapper">
+                <span class="param-main-label">Word Choice Range</span>
+                <span class="param-tech-pill">Top-K</span>
+              </div>
               <span class="value-display" id="valTopK">40</span>
             </div>
-            <input type="range" id="sliderTopK" min="1" max="100" step="1" value="40">
-            <div class="control-hint">Limits choices to the K most likely tokens</div>
+            <input type="range" id="sliderTopK" min="1" max="100" step="1" value="40" aria-label="Word Choice Range (Top-K)">
+            <div class="control-hint">Controls how many of the most likely next-token choices the AI considers.</div>
           </div>
 
           <div class="control-row">
             <div class="control-label">
-              <span>Tokens to Generate</span>
+              <div class="param-title-wrapper">
+                <span class="param-main-label">Maximum Output Length</span>
+                <span class="param-tech-pill">Tokens to Generate</span>
+              </div>
               <span class="value-display" id="valMaxTokens">120</span>
             </div>
-            <input type="range" id="sliderMaxTokens" min="30" max="300" step="10" value="120">
-            <div class="control-hint">Target length of text generated</div>
+            <input type="range" id="sliderMaxTokens" min="30" max="300" step="10" value="120" aria-label="Maximum Output Length (Tokens to Generate)">
+            <div class="control-hint">Controls the maximum number of tokens the AI generates.</div>
           </div>
         </div>
 
@@ -163,7 +172,7 @@
             <span class="metric-value" id="metricModel">-</span>
           </div>
           <div class="metric-item">
-            <span class="metric-title">Temp / Top-K</span>
+            <span class="metric-title">Sampling (Temp/K)</span>
             <span class="metric-value" id="metricSampling">-</span>
           </div>
         </div>
