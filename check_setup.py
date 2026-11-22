@@ -75,14 +75,12 @@ def check_directories():
         "data/raw",
         "data/processed",
         "models/checkpoints",
-        "notebooks",
         "src/scraper",
         "src/nlp",
         "src/model",
         "src/backend",
         "frontend",
         "tests",
-        "docs",
     ]
 
     print("\nChecking Project Directories:")
@@ -96,6 +94,7 @@ def check_directories():
         else:
             print(f"  [WARN] Missing directory: {d} (creating now...)")
             dir_path.mkdir(parents=True, exist_ok=True)
+            all_exist = False
     return all_exist
 
 
@@ -109,7 +108,7 @@ def main():
 
     print_header("Verification Summary")
     if py_ok and deps_ok and dirs_ok:
-        print(" ALL CHECKS PASSED! Ready for Stage 2 (Web Scraping & NLP).")
+        print(" ALL CHECKS PASSED! TechText AI environment is ready.")
         return 0
     else:
         print(" SOME CHECKS FAILED. Please review the output above.")

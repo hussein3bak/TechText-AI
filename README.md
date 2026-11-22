@@ -103,7 +103,9 @@ uvicorn src.backend.main:app --reload
 # http://localhost:8000
 ```
 
-> **Note on model weights:** The trained model checkpoint files are large (300MB+) and are excluded from the repository. To generate text, you can either train the models using the provided training scripts (`src/model/train.py` and `src/model/finetune.py`), or place pre-trained checkpoints in `models/checkpoints/`.
+> **Note on model weights:** 
+> - The raw training corpus (`data/raw/tech_corpus.txt`) is included in the repository so you can immediately preprocess and train the models (`python -m src.nlp.preprocessor` and `python -m src.model.train`).
+> - Pre-trained model checkpoint configurations are provided in `models/checkpoints/`. Large checkpoint weights (>300MB) exceed GitHub file limits and can be generated using the training scripts or placed directly in `models/checkpoints/`.
 
 ---
 
@@ -113,7 +115,7 @@ uvicorn src.backend.main:app --reload
 python -m pytest tests/test_api.py -v
 ```
 
-All 10 tests cover the NLP pipeline, the GPT transformer, the API endpoints, input validation, and the frontend file structure.
+All 12 tests cover the NLP pipeline, the GPT transformer, both models' generation, sampling parameter controls, the API endpoints, input validation, and the frontend file structure.
 
 ---
 
