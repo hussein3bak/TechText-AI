@@ -123,44 +123,48 @@ def list_models():
     # 1. Primary Model: NanoGPT (trained from scratch)
     tech_nano = CHECKPOINT_DIR / "tech_gpt_best.pt"
     if tech_nano.exists():
-        try:
-            gen = get_or_load_model("tech_nanogpt")
-            models.append(
-                ModelInfo(
-                    id="tech_nanogpt",
-                    name="NanoGPT",
-                    checkpoint_file="tech_gpt_best.pt",
-                    dataset="Scraped Tech Articles (Char)",
-                    parameters=gen.parameters,
-                    vocab_size=gen.vocab_size,
-                    val_loss=gen.val_loss,
-                    engine_type="NanoGPT Scratch",
-                    description="Custom character-level transformer built and trained entirely from scratch using PyTorch. Demonstrates core transformer mechanics and self-attention.",
-                )
+        params = 813440
+        vocab = 93
+        val_l = 2.0080
+        if "tech_nanogpt" in LOADED_MODELS:
+            gen = LOADED_MODELS["tech_nanogpt"]
+            params, vocab, val_l = gen.parameters, gen.vocab_size, gen.val_loss
+        models.append(
+            ModelInfo(
+                id="tech_nanogpt",
+                name="NanoGPT",
+                checkpoint_file="tech_gpt_best.pt",
+                dataset="Scraped Tech Articles (Char)",
+                parameters=params,
+                vocab_size=vocab,
+                val_loss=val_l,
+                engine_type="NanoGPT Scratch",
+                description="Custom character-level transformer built and trained entirely from scratch using PyTorch. Demonstrates core transformer mechanics and self-attention.",
             )
-        except Exception as e:
-            logger.warning(f"Error inspecting nano model: {e}")
+        )
 
     # 2. Secondary Model: TechText GPT (fine-tuned GPT-2)
     hf_path = CHECKPOINT_DIR / "tech_gpt2_finetuned"
     if hf_path.exists():
-        try:
-            gen = get_or_load_model("tech")
-            models.append(
-                ModelInfo(
-                    id="tech",
-                    name="TechText GPT",
-                    checkpoint_file="tech_gpt2_finetuned",
-                    dataset="Technology & AI Articles",
-                    parameters=gen.parameters,
-                    vocab_size=gen.vocab_size,
-                    val_loss=gen.val_loss,
-                    engine_type="Fine-Tuned Domain GPT",
-                    description="GPT-2 fine-tuned on technology and AI articles. Generates coherent, fluent technical prose.",
-                )
+        params = 81912576
+        vocab = 50257
+        val_l = 2.8364
+        if "tech" in LOADED_MODELS:
+            gen = LOADED_MODELS["tech"]
+            params, vocab, val_l = gen.parameters, gen.vocab_size, gen.val_loss
+        models.append(
+            ModelInfo(
+                id="tech",
+                name="TechText GPT",
+                checkpoint_file="tech_gpt2_finetuned",
+                dataset="Technology & AI Articles",
+                parameters=params,
+                vocab_size=vocab,
+                val_loss=val_l,
+                engine_type="Fine-Tuned Domain GPT",
+                description="GPT-2 fine-tuned on technology and AI articles. Generates coherent, fluent technical prose.",
             )
-        except Exception as e:
-            logger.warning(f"Error inspecting tech model: {e}")
+        )
 
     return models
 

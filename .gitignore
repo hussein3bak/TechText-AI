@@ -37,6 +37,7 @@ models/checkpoints/**/*.safetensors
 data/raw/*.jsonl
 data/raw/*.txt
 !data/raw/sample_*.jsonl
+!data/raw/tech_corpus.txt
 data/processed/*.bin
 data/processed/*.pt
 data/processed/*.pkl

@@ -44,8 +44,11 @@ class TextGenerator:
         if self.tokenizer.pad_token is None:
             self.tokenizer.pad_token = self.tokenizer.eos_token
 
-        self.model = AutoModelForCausalLM.from_pretrained(str(self.checkpoint_path), local_files_only=True)
-        self.model.to(self.device)
+        self.model = AutoModelForCausalLM.from_pretrained(
+            str(self.checkpoint_path), local_files_only=True, low_cpu_mem_usage=False
+        )
+        if self.device != "cpu":
+            self.model.to(self.device)
         self.model.eval()
 
         self.parameters = sum(p.numel() for p in self.model.parameters())

@@ -1,0 +1,30 @@
+# Version Control & Git
+.git
+.gitignore
+
+# Python Bytecode & Environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+ENV/
+
+# Testing & Cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs & Temporary Files
+logs/
+*.log
+scratch/
+out/
+
+# Presentation and personal artifacts
+presentation/
+
+# Local Environment Variables
+.env
+.env.local
